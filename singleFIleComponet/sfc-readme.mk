@@ -5,6 +5,15 @@
 ---
 
 @20180625
+
+.vue 文件 webpack 是没法运行的，需要对应的 vue-loader 来处理才行；
+hello.vue 中用到了 ES6 语法，需用到相应的语法转化 loader 将 ES6 转化成主流浏览器兼容的 ES5 语法，
+就需要用到官方推荐的 babel 工具了。
+###先安装需要的 loader:
+```
+# hello.vue 文件中使用了 css，所以需要 css-loader 来处理，vue-loader 会自动调用
+npm install vue-loader css-loader babel-loader babel-core babel-preset-env --save-devs
+```
 ###peerDependencies
 [1](https://docs.npmjs.com/files/package.json#peerdependencies)
 In some cases, you want to express the compatibility of your package with a host tool or library,
@@ -33,6 +42,11 @@ if they are not explicitly depended upon higher in the dependency tree.
 In the next major version of npm (npm@3), this will no longer be the case. 
 You will receive a warning that the peerDependency is not installed instead. 
 ---
+vue-loader ,其 package.json 文件中是将 vue-template-compiler 和 css-loader 作为 peerDependencies
+```
+npm install vue-template-compiler css-loader --save-dev
+
+```
 ===
 
 ###使用预处理器
@@ -52,3 +66,13 @@ npm install sass-resources-loader --save-dev
 ###有作用域的 style
 单文件组件中提供了一个非常便利的功能:
 当 style 标签添加 scoped 属性时，标签内的样式将只作用于当前组件中的元素。
+
+[webpack-github:1]
+https://github.com/vuejs-templates/webpack
+
+###实时重新加载(live reloading)
+```
+npm install webpack-dev-server --save-dev
+
+```
+
