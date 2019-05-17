@@ -7,13 +7,161 @@
     <title>You Don't Know Vuejs - Chapter 1</title>
 </head>
 <body>
-    <div id="app"></div>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <div id="app">
+            <!-- <p>{{message}}</p> -->
+            <input v-model="message">
+            <span>{{msg}}</span>
+    </div>
+    <div id="app2">
+        <span v-bind:title="message">
+            鼠标悬停几秒钟查看此次动态绑定的提示信息～！
+        </span>
+    </div>
+    <div id="app3">
+        <p v-if="seen">现在你看到我了</p>
+    </div>
+    <div id="app4">
+        <ol>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ol>
+    </div>
+    <div id="app5">
+            <ol>
+                <!-- 创建一个 todo-item 组x件的实例 -->
+                <todo-item></todo-item>
+            </ol>
+        <p>{{message}}</p>
+        <button v-on:click="reverseMessage">逆转消息</button>
+    </div>
+    <div id="app6">
+        <ol>
+            <todo-item v-for="item in groceryList"
+                v-bind:todo="item"
+                v-bind:key="item.id"
+            ></todo-item>
+        </ol>
+    </div>
+    <!-- <div id="app7">
+        <app-nav></app-nav>
+        <app-view>
+            <app-sidebar></app-sidebar>
+            <app-content></app-content>
+        </app-view>
+    </div> -->
+    <div id="components-demo">
+        <button-counter></button-counter>   
+    </div>
+    <!-- <blog-post title="My journey with Vue"></blog-post>
+    <blog-post title="Blogging with Vue"></blog-post>
+    <blog-post title="Why Vue is so fun"></blog-post> -->
+
+    <div id="blog-post-demo">
+        <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:title="post.title">
+        </blog-post> 
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="vue.js"></script>
     <script>
     var app = new Vue({
         el:"#app",
-        template:"<h1>Hello Vue.js!</h1>"
+        // template:"<h1>Hello Vue.js!</h1>",
+        data:{
+            message:'Hello World!',
+            msg:'Hi msg'
+        }
     });
+    </script>
+    <script>
+        var app2 = new Vue({
+            el:'#app2',
+            data: {
+                message:'页面加载于 ' + new Date().toLocaleString(),
+            }
+        });
+    </script>
+    <script>
+        var app3 = new Vue({
+            el:'#app3',
+            data:{
+                seen:false
+            }
+        })
+    </script>
+    <script>
+           var app4 = new Vue({
+            el:"#app4",
+            data:{
+                todos:[
+                    { text: '学习 Javascript'},
+                    { text: '学习 Vue'},
+                    { text: '整个牛项目'}
+                ]
+            }
+        })
+        var app5 = new Vue({
+            el:'#app5',
+            data:{
+                message:'Hello Vue.js!'
+            },
+            methods:{
+                reverseMessage:function(){
+                    this.message = this.message.split('').reverse().join('');
+                }
+            }
+        }) 
+    </script>
+    <script>
+        Vue.component('todo-item', {
+            // todo-item 组件现在接受一个 "prop"，类似于一个自定义特性。
+            // 这个 prop 名为 todo。
+            props: ['todo'],
+            template:'<li>{{todo.text}}</li>'
+            // template:'<li>这是个待办项</li>'
+        })
+        var app7 = new Vue({
+            el:'#app6',
+            data: {
+                groceryList:[
+                {id: 1, text: '蔬菜'},
+                {id: 2, text: '奶酪'},
+                {id: 3, text: '随便其它什么人吃的东西'}
+                ]
+            }
+        })
+        Vue.component('button-counter', {
+            data: function(){
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+        })
+        new Vue({
+            el:'#components-demo'
+        })
+    </script>
+    
+    <script>
+        Vue.component('blog-post',{
+            props:['title'],
+            template:'<h3>{{title}}</h3>'
+        })
+        new Vue({
+            el:'#blog-post-demo',
+            data:{
+                posts:[
+                    {id:1, title:'My journey with Vue'},
+                    {id:2, title:'Blogging with Vue'},
+                    {id:3, title:'Why Vue is so fun'}
+                ]
+            }
+        })
     </script>
 </body>
 </html>
